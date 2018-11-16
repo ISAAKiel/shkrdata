@@ -1,0 +1,9 @@
+{
+    "path" : "~/daten/analyse/shkrdata",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}

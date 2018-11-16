@@ -1,0 +1,319 @@
+#library(sf)   # Regular sample noch nicht in sf implementiert. Auxiliary functions dd_sf_line and dd_sf_line can later switch to sf without touching the main dd functions.
+
+
+#' @title dd_sp_line, creates sample points along a profile line and returns coordinates 
+#' 
+#' The function dd_sp_line is an auxiliary function for creating sample points along a profile/transect line. The function takes coordinates and the exact number of sample points as parameters and returns a dataframe of coordinates. 
+#'
+#' @param start_x numeric, x-coordinate of the profile starting point
+#' @param start_y numeric, y-coordinate of the profile starting point
+#' @param end_x numeric, x-coordinate of the profile end point
+#' @param end_y numeric, y-coordinate of the profile end point
+#' @param n integer, number of sample points
+#'
+#' @return dataframe containing the coordinates of the sample points
+#' 
+#' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
+#'
+#' @export dd_sp_line
+#'
+#' @examples 
+#' plot(dd_sp_line(4,2,6,4,12))
+dd_sp_line <- function(start_x, start_y, end_x, end_y, n = 10){
+    spx <- seq(from = start_x, to = end_x, by = (end_x-start_x)/n) 
+    spy <- seq(from = start_y, to = end_y, by = (end_y-start_y)/n) 
+    spxy <- cbind(spx,spy)
+    return(spxy)
+}
+
+
+
+#' @title dd_sp_poly, creates sample points in polygone and returns coordinates 
+#' 
+#' The function dd_sp_poly is an auxiliary function for creating sample points inside a given polygon. The function takes a spatial polygon and the approximated number of sample points as parameters and returns a dataframe of coordinates. This function is rather a wrapper of the sp::spsample function producing a coordinate list as output.
+#'
+#' @param poly SpatialPolygoneDataFrame or SpatialPolygone, polygone of the are in which the sample points will be produced
+#' @param n integer, number of sample points
+#'
+#' @return dataframe containing the coordinates of the sample points
+#' 
+#' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
+#'
+#' @export dd_sp_poly
+#'
+#' @examples
+#' data(meuse.area)
+#' meuse.sr = SpatialPolygons(list(Polygons(list(Polygon(meuse.area)), "x")))
+#' plot(dd_sp_poly(meuse.sr, 200))
+dd_sp_poly <- function(poly, n = 100){
+    sp_pt <- spsample(poly, n = n, type =  "regular")
+    spxy <- coordinates(sp_pt)
+    return(spxy)
+}
+
+
+
+#' @title dd1_net, distance diagram network type 1, one view point, focus profile
+#'
+#' The function dd1_net creates an igraph object representing the sample points of a dd1 distance diagram. dd1 uses the connections from one startingpoint to other points along a profile line until the profile endpoint is reached. 
+#'
+#' @param startend_df dataframe, containing two coloums of coordinates. The first point is the profile starting point and the second point the profile end point.
+#' @param n integer, number of sample points
+#'
+#' @return igraph objects representing the sample points and connections required for calculating the distance diagram type 
+#' @export dd1_net
+#'
+#' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
+#'
+#' @examples
+#' dfs <- data.frame(x=c(3,6), y=c(9,7)) 
+#' dd1_net(dfs)
+dd1_net <- function(startend_df, n = 10){
+    start_x <- startend_df[1,1]
+    start_y <- startend_df[1,2]
+    end_x <- startend_df[2,1]
+    end_y <- startend_df[2,2]
+    sp_co <- dd_sp_line(start_x, start_y, end_x, end_y, n = 10)
+    # igraph mit allen verbindungen
+    n2 = length(sp_co[,1])
+    dd1_igraph <- make_star(n2)
+    V(dd1_igraph)$x <- sp_co[,1]
+    V(dd1_igraph)$y <- sp_co[,2]
+    V(dd1_igraph)$name <- 1:length(sp_co[,1])
+    return(dd1_igraph)
+}
+
+
+
+#' @title dd3_net, distance diagram type 3 network, one viewpoint, focus all
+#'
+#' The function dd3_net creates an igraph object representing the sample points of a dd3 distance diagram. dd3 uses the connections from one starting point to all other points regularly distributed it the given polygon. 
+#'
+#' @param start_df dataframe or vector, containing two coloums of coordinates. The first point in the data frame is the profile starting point. 
+#' @param poly SpatialPolygoneDataFrame or SpatialPolygone, polygone of the are in which the sample points will be produced
+#' @param n integer, number of sample points
+#'
+#' @return igraph objects representing the sample points and connections required for calculating the distance diagram type 3
+#' @export dd3_net
+#' 
+#' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
+#'
+#' @examples
+#' dfs <- data.frame(x=c(3,6,5,9,5,8,0,3), y=c(9,7,8,9,9,6,5,6)) # only one point required and used
+#' data(meuse.area)
+#' meuse.sr = SpatialPolygons(list(Polygons(list(Polygon(meuse.area)), "x")))
+#' dd3_net(dfs, meuse.sr)
+dd3_net <- function(start_df, poly, n = 10){
+    d <- dim(start_df)[2]
+    if (d==2){
+        start_x <- start_df[1,1]
+        start_y <- start_df[1,2]
+    }
+    if (d==1){ # if just a vector:
+        start_x <- start_df[1]
+        start_y <- start_df[2]
+    }
+    sp_co <- dd_sp_poly(poly, n)
+    x <- rbind(start_x, sp_co[,1])
+    y <- rbind(start_y, sp_co[,2])
+    sp_co2 <- cbind(x = x,y = y)
+    # igraph mit allen verbindungen
+    n2 = length(sp_co[,1])
+    dd3_igraph <- make_star(n2)
+    V(dd3_igraph)$x <- sp_co2[,1]
+    V(dd3_igraph)$y <- sp_co2[,2]
+    V(dd3_igraph)$name <- 1:length(sp_co2[,1])
+    return(dd3_igraph)
+}   
+
+
+
+#' @title dd9_net
+#' dd9_net, dd9-sampling network, view from all, focus all
+#'
+#' The function dd9_net creates an igraph object representing the sample points of a dd9 distance diagram. dd9 uses the connections from all available points as starting point to all available other points. The points are regularly distributed it the given polygon. 
+#'
+#' @param poly SpatialPolygoneDataFrame or SpatialPolygone, polygone of the are in which the sample points will be produced
+#' @param n integer, number of sample points
+#'
+#' @return igraph objects representing the sample points and connections required for calculating the distance diagram type 9
+#' @export dd9_net
+#'
+#' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
+#'
+#' @examples 
+#' data(meuse.area)
+#' meuse.sr = SpatialPolygons(list(Polygons(list(Polygon(meuse.area)), "x")))
+#' dd9_net(meuse.sr)
+dd9_net <- function(poly, n=30){
+    sp_co <- dd_sp_poly(poly, n)
+    n2 = length(sp_co[,1])
+    dd9_igraph <- make_full_graph(n2)
+    V(dd9_igraph)$x <- sp_co[,1]
+    V(dd9_igraph)$y <- sp_co[,2]
+    V(dd9_igraph)$name <- 1:length(sp_co[,1])
+    return(dd9_igraph)
+}
+
+
+
+#' @title dd1, distance diagram type 1, one view point, focus profile
+#'
+#' The function dd1 plots a distance diagram of type dd1 (Nakonz/Knitter 2016, 198) and returns the type spectra and the distance vector of the distance diagram. Type dd1 uses the connections from one startingpoint to other points along a profile line until the profile endpoint is reached. 
+#'
+#' @param dfs 
+#' @param startend_df dataframe, containing two coloums of coordinates. The first point is the profile starting point and the second point the profile end point.
+#' @param n integer, number of sample points
+#' @param features a data.frame containing metric x and y coordinates of features, and feature type. Coordinates are expected to be the first two columns.
+#' @param type_col a character string naming the columname containing feature types.
+#' @param pre_size numeric, amount of letters, e.g. characters before typenumbers
+#' @param metric_feature  character string, the distance measure to be used for the cultural distance ("euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski")
+#' @param metric_nodes character string, the distance measure to be used for the geographical distance ("euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski")
+#' @param dd_title character string, second part of the diagram title
+#'
+#' @return dataframe type_spectra with type spectra and dataframe dd1_distances containing the distances used in the plot
+#' @export dd1
+#' 
+#' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
+#'
+#' @examples
+#' dfs <- data.frame(x=c(1,6), y=c(1,7)) # Profile specification
+#' features <- data.frame(x = c(1,3,2,5,7,2,3,5,4,2,1,3,7,6,5,2,3,4,2,6,1,1,7,5,3,4,6,7,0,0,1,0,2,3,1),
+#'                        y = c(9,7,5,4,4,4,3,3,4,6,2,1,5,4,6,7,8,9,0,5,5,3,7,5,6,3,3,2,2,1,6,4,1,2,3),
+#'                        type = c("B352","B322","B321","B321","B324","B324","B3","B3","B32","B324","B351","B352","B352","B351","B321","B324","B322","B322","B322","B322","B352","B351","B35","B351","B352","B321","B321","B32","B321","B321","B321","B351","B35","B34","B35")
+#' ) # Simulated Data
+#' dd_title <- "Simulated Data"
+#' dd1(dfs, features, type_col, pre_size, metric_feature, metric_nodes, dd_title)
+dd1 <- function(startend_df, features, n = 10, type_col = "type", pre_size = 1, metric_feature = "euclidean", metric_nodes = "euclidean", dd_title = ""){
+    dd1_net_o <- dd1_net(startend_df, n)  
+    dd1_net_matrix <- as_adj(dd1_net_o, type = "both", names = TRUE, sparse = FALSE)
+    nodes <- data.frame(nodes_x = V(dd1_net_o)$x, nodes_y = V(dd1_net_o)$y, nodes_id = V(dd1_net_o)$name)
+    geo_dist_matrix <- dist_matr(nodes, method = metric_nodes)
+    aggr_fea <- aggr_fea_voro(nodes, features, type_col)     # fehler mit Mehrfachpunkten und abweichenden Dataframes!!!
+    typelist <- create_type_generator(features, type_col, 1)   # Fehler in der Aggregation: nur ein Knoten, aber unter welchen Bedingungen
+    type_spectra <- create_typespectra(aggr_fea, typelist)
+    cul_dist <- dist_matr(type_spectra, metric_feature)
+    dd1_cul_dist <- dd1_net_matrix * cul_dist # filter distance matrix according to the dd1 network
+    dd1_distances <- data.frame(gdist = geo_dist_matrix[,1], cdist = dd1_cul_dist[,1])
+    plot(dd1_distances, main = paste("Distance Diagram Type dd1:", dd_title, sep = " "), type = "line")
+    return(list(type_spectra, dd1_distances))  # ggf. noch ggplot object???
+}
+
+
+
+#' @title dd3, distance diagram type 3, one view point, focus all
+#'
+#' The function dd3 plots a distance diagram of type dd3 (Nakonz/Knitter 2016, 198) and returns the type spectra and the distance vector of the distance diagram. Type dd3 uses the connections from one startingpoint to all other points in a certain area. 
+#'
+#' @param start_df dataframe or vector, containing two coloums of coordinates. The first point in the data frame is the profile starting point. 
+#' @param poly SpatialPolygoneDataFrame or SpatialPolygone, polygone of the are in which the sample points will be produced
+#' @param n integer, number of sample points
+#' @param features a data.frame containing metric x and y coordinates of features, and feature type. Coordinates are expected to be the first two columns.
+#' @param type_col a character string naming the columname containing feature types.
+#' @param pre_size numeric, amount of letters, e.g. characters before typenumbers
+#' @param metric_feature  character string, the distance measure to be used for the cultural distance ("euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski")
+#' @param metric_nodes character string, the distance measure to be used for the geographical distance ("euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski")
+#' @param dd_title character string, second part of the diagram title
+#' @param step integer, number of sample distances of the distance diagram
+#'  
+#' @return dataframe type_spectra with type spectra and dataframe dd1_distances containing the distances used in the plot
+#' @export dd3
+#' 
+#' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
+#'
+#' @examples
+#' dfs <- data.frame(x=c(5), y=c(4))
+#' features <- data.frame(x = c(1,3,2,5,7,2,3,5,4,2,1,3,7,6,5,2,3,4,2,6,1,1,7,5,3,4,6,7,0,0,1,0,2,3,1),
+#'                        y = c(9,7,5,4,4,4,3,3,4,6,2,1,5,4,6,7,8,9,0,5,5,3,7,5,6,3,3,2,2,1,6,4,1,2,3),
+#'                        type = c("B352","B322","B321","B321","B324","B324","B3","B3","B32","B324","B351","B352","B352","B351","B321","B324","B322","B322","B322","B322","B352","B351","B35","B351","B352","B321","B321","B32","B321","B321","B321","B351","B35","B34","B35")
+#' ) # Simulated Data
+#' dd_title <- "Simulated Data"
+#' data(meuse.area)
+#' meuse.sr = SpatialPolygons(list(Polygons(list(Polygon(meuse.area)), "x")))
+#' dd3(start_df, poly=meuse.sr, features, n = 20, type_col, pre_size, metric_feature, metric_nodes, dd_title)
+dd3 <- function(startend_df, poly, features, n = 25, type_col = "type", pre_size = 1, metric_feature = "euclidean", metric_nodes = "euclidean", dd_title = "", step = 25){
+    dd3_net_o <- dd3_net(startend_df, poly, n)  
+    dd3_net_matrix <- as_adj(dd3_net_o, type = "both", names = TRUE, sparse = FALSE)
+    nodes <- data.frame(nodes_x = V(dd3_net_o)$x, nodes_y = V(dd3_net_o)$y, nodes_id = V(dd9_net_o)$name)
+    geo_dist_matrix <- dist_matr(nodes, method = metric_nodes)
+    aggr_fea <- aggr_fea_voro(nodes, features, type_col)     # fehler mit Mehrfachpunkten und abweichenden Dataframes!!!
+    typelist <- create_type_generator(features, type_col, 1)   # Fehler in der Aggregation: nur ein Knoten, aber unter welchen Bedingungen
+    type_spectra <- create_typespectra(aggr_fea, typelist)
+    cul_dist <- dist_matr(type_spectra, metric_feature)
+    dd3_cul_dist <- dd3_net_matrix * cul_dist # filter distance matrix according to the dd3 network
+    dd3_distances <- data.frame(gdist = geo_dist_matrix[,1], cdist = dd3_cul_dist[,1])
+    x_vec <- seq(0, max(dd3_distances$gdist), by = step)
+    y_vec <- x_vec 
+    y_vec <- 0
+    for (i in seq_along(x_vec)){
+        y_vec[i] <- mean(df[(dd3_distances$gdist >= (x_vec[i] - step/2) & dd3_distances$gdist <= (x_vec[i] + step/2)),2])
+    }
+    dd3_distances <- data.frame(gdist = x_vec, cdist = y_vec)
+    plot(dd3_distances, main = paste("Distance Diagram Type dd3:", dd_title, sep = " "), type = "line")
+    return(list(type_spectra, dd3_distances))  # ggf. noch ggplot object??? aber so kann auf ggplot verzichtet werden
+}
+
+
+
+#' @title dd9, distance diagram type 9, all view points, focus all
+#'
+#' The function dd9 plots a distance diagram of type dd9 (Nakonz/Knitter 2016, 198) and returns the type spectra and the distance vector of the distance diagram. Type dd9 uses the connections from all startingpoints to all other points in a certain area. 
+#'
+#' @param poly SpatialPolygoneDataFrame or SpatialPolygone, polygone of the are in which the sample points will be produced
+#' @param n integer, number of sample points
+#' @param features a data.frame containing metric x and y coordinates of features, and feature type. Coordinates are expected to be the first two columns.
+#' @param type_col a character string naming the columname containing feature types.
+#' @param pre_size numeric, amount of letters, e.g. characters before typenumbers
+#' @param metric_feature  character string, the distance measure to be used for the cultural distance ("euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski")
+#' @param metric_nodes character string, the distance measure to be used for the geographical distance ("euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski")
+#' @param dd_title character string, second part of the diagram title
+#' @param step integer, number of sample distances of the distance diagram
+#'  
+#' @return dataframe type_spectra with type spectra and dataframe dd1_distances containing the distances used in the plot
+#' @export dd9
+#' 
+#' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
+#'
+#' @examples
+#' features <- data.frame(x = c(1,3,2,5,7,2,3,5,4,2,1,3,7,6,5,2,3,4,2,6,1,1,7,5,3,4,6,7,0,0,1,0,2,3,1),
+#'                        y = c(9,7,5,4,4,4,3,3,4,6,2,1,5,4,6,7,8,9,0,5,5,3,7,5,6,3,3,2,2,1,6,4,1,2,3),
+#'                        type = c("B352","B322","B321","B321","B324","B324","B3","B3","B32","B324","B351","B352","B352","B351","B321","B324","B322","B322","B322","B322","B352","B351","B35","B351","B352","B321","B321","B32","B321","B321","B321","B351","B35","B34","B35")
+#' ) # Simulated Data
+#' dd_title <- "Simulated Data"
+#' data(meuse.area)
+#' meuse.sr = SpatialPolygons(list(Polygons(list(Polygon(meuse.area)), "x")))
+#' dd9(poly=meuse.sr, features, n = 20, type_col, pre_size, metric_feature, metric_nodes, dd_title)
+dd9 <- function(poly, features, n = 25, type_col = "type", pre_size = 1, metric_feature = "euclidean", metric_nodes = "euclidean", dd_title = "", step = 25){
+    dd9_net_o <- dd9_net(poly, n)  
+    dd9_net_matrix <- as_adj(dd9_net_o, type = "both", names = TRUE, sparse = FALSE)
+    nodes <- data.frame(nodes_x = V(dd9_net_o)$x, nodes_y = V(dd9_net_o)$y, nodes_id = V(dd9_net_o)$name)
+    geo_dist_matrix <- dist_matr(nodes, method = metric_nodes)
+    aggr_fea <- aggr_fea_voro(nodes, features, type_col)     # fehler mit Mehrfachpunkten und abweichenden Dataframes!!!
+    typelist <- create_type_generator(features, type_col, 1)   # Fehler in der Aggregation: nur ein Knoten, aber unter welchen Bedingungen
+    type_spectra <- create_typespectra(aggr_fea, typelist)
+    cul_dist <- dist_matr(type_spectra, metric_feature)
+    dd9_cul_dist <- dd9_net_matrix * cul_dist # filter distance matrix according to the dd9 network
+    dd9_distances <- data.frame(gdist = geo_dist_matrix[,1], cdist = dd9_cul_dist[,1])
+    x_vec <- seq(0, max(dd9_distances$gdist), by = step)
+    y_vec <- x_vec 
+    y_vec <- 0
+    for (i in seq_along(x_vec)){
+        y_vec[i] <- mean(df[(dd9_distances$gdist >= (x_vec[i] - step/2) & dd9_distances$gdist <= (x_vec[i] + step/2)),2])
+    }
+    dd9_distances <- data.frame(gdist = x_vec, cdist = y_vec)
+    plot(dd9_distances, main = paste("Distance Diagram Type dd9:", dd_title, sep = " "), type = "line")
+    return(list(type_spectra, dd9_distances))  # ggf. noch ggplot object??? aber so kann auf ggplot verzichtet werden
+}
+
+
+
+
+
+
+
+
+
+### Kommentare
+# Fehler data contain duplicated points bei aggr_fea_voro, wenn duplicate points in den features (was möglich sein muss)
+
+# method für cul_dist ist mehrdeutung, besser metric_nodes und metric_features

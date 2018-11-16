@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1542382894227.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "7F878EE2",
+    "lastKnownWriteTime" : 1542404942,
+    "last_content_update" : 1542404942553,
+    "path" : "~/daten/analyse/shkrdata/R/shkr.R",
+    "project_path" : "R/shkr.R",
+    "properties" : {
+        "cursorPosition" : "38,0",
+        "docOutlineVisible" : "0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
