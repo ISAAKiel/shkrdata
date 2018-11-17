@@ -1,0 +1,226 @@
+---
+title: Retrieving and handling SHKR data with the package shkrdata
+author: Oliver Nakoinz
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Retrieving and handling SHKR data with the package shkrdata}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+# str(knitr::opts_chunk$get())
+knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE,
+  progress=FALSE
+  )
+
+library(magrittr)
+```
+
+# Workflow
+
+```{r ER diagram, echo=FALSE, message=FALSE, warning=FALSE, fig.cap = "ER diagram"}
+library(DiagrammeR)  # http://rich-iannone.github.io/DiagrammeR/index.html   http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html
+dfgraph1 <- DiagrammeR::grViz("digraph G {
+// 1. Daten/Objekte
+// =============
+shkr          [shape=box, label= 'shkr_list', fontname='FreeSans', fontsize=10, style=filled, fillcolor=Bisque, tooltip = 'list of tibbles']
+
+shkr_fibulae  [shape=box, label= 'shkr_fibulae', fontname='FreeSans', fontsize=10, style=filled, fillcolor=DarkKhaki, tooltip = 'tibble of selected artefact types']
+
+shkr_fibulae_comp  [shape=box, label= 'shkr_fibulae_comp', fontname='FreeSans', fontsize=10, style=filled, fillcolor=DarkKhaki, tooltip = 'tibble of selected artefact types completed with data from other loc levels']
+
+shkr_fibulae_comp_coord   [shape=box, label= 'shkr_fibulae_comp_coord', fontname='FreeSans', fontsize=10, style=filled, fillcolor=DarkKhaki, tooltip = 'tibble of selected artefact types completed with data from other loc levels and completed coordinates']
+
+shkr_fibulae_comp_coord_r  [shape=box, label= 'shkr_fibulae_comp_coord_r', fontname='FreeSans', fontsize=10, style=filled, fillcolor=DarkKhaki, tooltip = 'tibble of selected artefact types completed with data from other loc levels and completed coordinates; restricted to an area']
+
+shkr_fibulae_graves  [shape=box, label= 'shkr_fibulae_graves', fontname='FreeSans', fontsize=10, style=filled, fillcolor=DarkKhaki, tooltip = 'tibble of selected artefact types completed with data from other loc levels and completed coordinates; restricted to an area and to a certain object type']
+
+ts  [shape=box, label= 'ts', fontname='FreeSans', fontsize=10, style=filled, fillcolor=DarkKhaki, tooltip = 'tibble, contingence table, type spectrum']
+
+dm  [shape=box, label= 'dm', fontname='FreeSans', fontsize=10, style=filled, fillcolor=DarkKhaki, tooltip = 'distance matrix']
+
+snet  [shape=box, label= 'snet', fontname='FreeSans', fontsize=10, style=filled, fillcolor=DarkKhaki, tooltip = 'igraph']
+
+Plot_snet              [shape=oval, label= 'plot:snet \n _man_cut_wnet', fontname='FreeSans', fontsize=10, style=filled, fillcolor=CornflowerBlue]
+
+shkr2010_jma        [shape=oval, label= 'web:shkr2010', fontname='FreeSans', fontsize=10, style=filled, fillcolor=PaleVioletRed]
+
+shkr2010_file              [shape=oval, label= 'file:shkr2010', fontname='FreeSans', fontsize=10, style=filled, fillcolor=PaleVioletRed]
+
+
+// 2. Prozess/Methoden
+// ================
+shkr2010_download      [shape=diamond, label= 'shkrdata::shkr2010_download()', fontname='FreeSans',fontsize=10, style=filled, fillcolor=Thistle, tooltip = 'download data from JMA server']
+
+load_shkr2010      [shape=diamond, label= 'shkrdata::load_shkr2010()', fontname='FreeSans',fontsize=10, style=filled, fillcolor=Thistle, tooltip = 'load shkr data into a list']
+
+
+shkr_filter_loc10      [shape=diamond, label= 'shkrdata::shkr_filter_loc10()', fontname='FreeSans',fontsize=10, style=filled, fillcolor=LightSteelBlue, tooltip = 'filter certain artefact types']
+
+shkr_comp_loc10     [shape=diamond, label= 'shkrdata::shkr_comp_loc10()', fontname='FreeSans',fontsize=10, style=filled, fillcolor=LightSteelBlue, tooltip = 'add information from the other loc levels to loc10']
+
+shkr_coord_trans    [shape=diamond, label= 'shkrdata::shkr_coord_trans()', fontname='FreeSans',fontsize=10, style=filled, fillcolor=LightSteelBlue, tooltip = 'transfere place coordinates to site coordinates for missing site coordinates']
+
+shkr_filter_region      [shape=diamond, label= 'shkrdata::shkr_filter_region()', fontname='FreeSans',fontsize=10, style=filled, fillcolor=LightSteelBlue, tooltip = 'restrict the data to a certain area']
+
+shkr_filter_loc10_agg      [shape=diamond, label= 'shkrdata::shkr_filter_loc10_agg()', fontname='FreeSans',fontsize=10, style=filled, fillcolor=LightSteelBlue, tooltip = 'restrict the data to a certain aggregation type such as graves or sites']
+
+shkr_ts    [shape=diamond, label= 'shkrdata::shkr_ts()', fontname='FreeSans',fontsize=10, style=filled, fillcolor=LightSteelBlue, tooltip = 'calculate the type spectrum using moin']
+
+shkr_cul_dist     [shape=diamond, label= 'shkrdata::shkr_cul_dist()', fontname='FreeSans',fontsize=10, style=filled, fillcolor=LightSteelBlue, tooltip = 'calculate the cultural distance matrix using moin']
+
+shkr_net   [shape=diamond, label= 'shkrdata::shkr_net()', fontname='FreeSans',fontsize=10, style=filled, fillcolor=LightSteelBlue, tooltip = 'use the distance matrix as adjacency matrix']
+
+
+plot         [shape=diamond, label= 'plot', fontname='FreeSans',fontsize=10, style=filled, fillcolor=LightBlue, tooltip = 'plot the igraph object']
+
+
+
+// 3. Kanten/Datenfluss
+// =================
+shkr2010_jma  -> shkr2010_download
+shkr2010_download -> shkr2010_file
+shkr2010_file -> load_shkr2010
+load_shkr2010 -> shkr
+shkr -> shkr_filter_loc10
+shkr_filter_loc10 -> shkr_fibulae
+shkr_fibulae -> shkr_comp_loc10
+shkr_comp_loc10 -> shkr_fibulae_comp
+shkr_fibulae_comp -> shkr_coord_trans
+shkr_coord_trans ->  shkr_fibulae_comp_coord
+shkr_fibulae_comp_coord -> shkr_filter_region
+shkr_filter_region -> shkr_fibulae_comp_coord_r
+shkr_fibulae_comp_coord_r -> shkr_filter_loc10_agg
+shkr_filter_loc10_agg -> shkr_fibulae_graves
+shkr_fibulae_graves -> shkr_ts
+shkr_ts -> ts
+ts -> shkr_cul_dist
+shkr_cul_dist -> dm
+dm -> shkr_net
+shkr_net -> snet
+snet -> plot
+plot -> Plot_snet
+
+// 4. Subgraph
+// ========
+
+}", width = 600, height = 1700, engine = "dot") # engine = "neato")
+dfgraph1
+```
+
+# Install
+
+```{r inst, eval=FALSE}
+library(devtools)
+devtools::install_github("CRC1266-A2/moin")
+
+devtools::install_gitlab("oliver.nakoinz/shkrdata.git")
+
+#utils::download.file("https://gitlab.com/oliver.nakoinz/shkrdata.git", "shkrdata")
+```
+
+
+# Download and load data
+
+First, we have to download the data.
+
+```{r download, eval=FALSE}
+shkrdata::shkr2010_download()
+```
+
+All filed of the downloaded data are loaded into a list containing tibbles.
+
+```{r load}
+shkr <- shkrdata::load_shkr2010()
+```
+
+# Filter and complete data
+
+Now, we select the the types, which we want to include into the analysis. The placeholder "." can be used in the type code.
+
+```{r filter types}
+shkr_fibulae <- shkrdata::shkr_filter_loc10(shkr, a = "A", b = "B31", c = "C", d = "D")
+```
+
+The next step is to include the information from all loc levels to the artefact tibble.
+
+```{r complete levels}
+shkr_fibulae_comp <- shkrdata::shkr_comp_loc10(shkr_fibulae, shkr)
+```
+
+Missing site coordinates are taken from the place coordinates.
+
+```{r complete fill coordinates}
+shkr_fibulae_comp_coord <- shkrdata::shkr_coord_trans(shkr_fibulae_comp)
+```
+
+The area of interest can be restricted by administrative units or by coordinates.
+
+```{r filter region}
+shkr_fibulae_comp_coord <- shkrdata::shkr_filter_region(shkr_fibulae_comp_coord, ftype = "loc05", a = 23133)
+```
+
+For our analysis only gravegoods are used.
+
+```{r filter graves}
+shkr_fibulae_graves <- shkrdata::shkr_filter_loc10_agg(shkr_fibulae_comp_coord, focus = "graves")
+```
+
+# Type spectrum
+
+Now, the selection of data is completed and the spectrum of types can be calculated.
+
+```{r type spectrum}
+ts <- shkrdata::shkr_ts(shkr_fibulae_graves)
+```
+
+# Distance matrix
+
+The is used to calculate a distance matrix.
+
+```{r distance matrix}
+dm <- shkrdata::shkr_cul_dist(ts)
+```
+
+# Network
+
+The distance matrix is used as adjecancy matrix for producing an igraph object. 
+
+```{r igraph}
+snet <- shkrdata::shkr_net(dm)
+```
+
+
+Finally, we can plot the network.
+
+```{r plot net}
+plot(snet, edge.width = 6*igraph::E(snet)$weight)
+```
+
+
+# Query type list
+
+It is also possible to print subtypes of a type.
+
+```{r subtypes 1}
+shkrdata::print_subtypes(shkr, typestring = "B311213", descr = FALSE)
+```
+
+Here "." can be used as wildcard for one digit.
+
+```{r subtypes 2}
+shkrdata::print_subtypes(shkr, typestring = "B3112.21", descr = FALSE)
+```
+
+The the string can also be searched in the type description.
+
+```{r subtypes 3}
+shkrdata::print_subtypes(shkr, typestring = "Ompha", descr = TRUE)
+```
+
+
+
+

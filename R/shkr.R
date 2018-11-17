@@ -297,7 +297,7 @@ shkr_filter_region <- function(data, ftype = "loc01", a = 11, x_range = c(0,3597
       fdata
   }
 
-  return(data)
+  return(fdata)
 }
 
 
@@ -312,9 +312,11 @@ shkr_filter_region <- function(data, ftype = "loc01", a = 11, x_range = c(0,3597
 #' @export
 #'
 #' @examples
-#' shkr_fibulae_agg <- shkr_filter_loc10_graves(shkr_fibeln_comp_coord)
+#' shkr_fibulae_agg <- shkr_filter_loc10_agg(shkr_fibeln_comp_coord)
 shkr_filter_loc10_agg <- function(data, focus = "graves"){
   require(magrittr)
+
+    fdata <- c()
 
   if(focus == "graves"){
   data %>%
@@ -345,6 +347,7 @@ shkr_filter_loc10_agg <- function(data, focus = "graves"){
 #' @return the same dataframe with normalized values
 #'
 #' @examples
+#'
 normalize <- function(a){a / sum(a, na.rm=TRUE)}
 
 
@@ -401,7 +404,7 @@ shkr_ts <- function(features, facet = "b", aggr = "grave", normal = TRUE){
     graves_type_spectra <- moin::create_typespectra(aggr_fea=features_agg, graves_typelist)
   }
 
-  if(norm == TRUE){
+  if(normal == TRUE){
     graves_type_spectra[2:length(graves_type_spectra[1,])] <- t(apply(graves_type_spectra[2:length(graves_type_spectra[1,])], 1, normalize))
   }
 
@@ -445,5 +448,42 @@ shkr_net <- function(dm){
   diag(dm) <- 0
   shkr_graph <- igraph::graph_from_adjacency_matrix(dm, mode = "undirected", weighted = TRUE)
   return(shkr_graph)
+}
+
+
+
+
+#' Title print_subtypes prints subtypes of types
+#'
+#' The function print_subtypes prints and returns the subtypes of a type represented by the typestring containig a type code such as "B31". With the "descr" category it is also possible to submitt a textstring, for which is searched in the type description.
+#'
+#' @param data shkr database as loaded by load_shkr2010
+#' @param typestring type code such as "B31" or "A3" or "B31.1". The dot "." is used als wildcard representing one digit.
+#' @param descr logical value, if TRUE the typestring is searched in the type description and not in the type code
+#'
+#' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
+#'
+#' @return tibble of subtypes
+#' @export
+#'
+#' @examples
+#' print_subtypes(shkr, typestring = "B311.21", descr = FALSE)
+#' print_subtypes(shkr, typestring = "Ompha", descr = TRUE)
+print_subtypes <- function(data, typestring = "B", descr = FALSE){
+    require(stringr)
+    require(magrittr)
+    if(descr == TRUE){
+        data[[11]] %>%
+            dplyr::select(d_klasse, d_text_beschr, d_name) %>%
+            dplyr::filter(stringr::str_detect(d_text_beschr, typestring)) ->
+            fdata
+    } else {
+        data[[11]] %>%
+            dplyr::select(d_klasse, d_name, d_text_beschr) %>%
+            dplyr::filter(stringr::str_detect(d_klasse, typestring)) ->
+            fdata
+    }
+    #print(fdata)
+    return(fdata)
 }
 
