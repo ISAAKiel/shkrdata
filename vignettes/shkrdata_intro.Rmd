@@ -1,10 +1,11 @@
 ---
 title: Retrieving and handling SHKR data with the package shkrdata
 author: Oliver Nakoinz
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Retrieving and handling SHKR data with the package shkrdata}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -13,7 +14,9 @@ vignette: >
 knitr::opts_chunk$set(
   message = FALSE,
   warning = FALSE,
-  progress=FALSE
+  progress=FALSE,
+  collapse = TRUE,
+  comment = "#>"
   )
 
 library(magrittr)
@@ -118,7 +121,8 @@ library(devtools)
 devtools::install_github("CRC1266-A2/moin")
 
 devtools::install_gitlab("oliver.nakoinz/shkrdata.git")
-
+# or
+install.packages("./shkrdata_0.1.2.tar.gz", repos = NULL, type="source")
 #utils::download.file("https://gitlab.com/oliver.nakoinz/shkrdata.git", "shkrdata")
 ```
 
@@ -228,5 +232,4 @@ shkrdata::print_subtypes(shkr, typestring = "Ompha", descr = TRUE)
 ```{r cleaning, include=FALSE}
 unlink("./shkr2010/", recursive=TRUE) 
 ```
-
 
