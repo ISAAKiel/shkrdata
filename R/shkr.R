@@ -12,13 +12,12 @@
 #' @examples
 #' shkr2010_download()
 shkr2010_download <- function(path = "../2data"){
-    download.file("http://www.jma.uni-kiel.de/en/research-projects/data-exchange-platform/data/shkr-db", paste(path, "/shkr-db.zip", sep=""))
+    download.file("https://www.jma.uni-kiel.de/en/research-projects/data-exchange-platform", paste(path, "/shkr-db.zip", sep=""))
     unzip(paste(path, "/shkr-db.zip", sep=""), exdir = path)
 
     file.rename(paste(path, "/db", sep=""), paste(path, "/shkr2010", sep=""))
     file.remove(paste(path, "/shkr-db.zip", sep=""))
 }
-
 
 
 #' \code{load_shkr2010} Load shkr data
