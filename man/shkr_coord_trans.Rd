@@ -2,19 +2,19 @@
 % Please edit documentation in R/shkr.R
 \name{shkr_coord_trans}
 \alias{shkr_coord_trans}
-\title{Title shkr_coord_trans transferes place coordinates to the sites level
+\title{\code{shkr_coord_trans} transferes place coordinates to the sites level
 for unknown site locations}
 \usage{
 shkr_coord_trans(data)
 }
 \arguments{
-\item{data}{artefact tibble as produced by shkr_filter_loc10}
+\item{data}{artefact tibble as produced by \code{shkr_filter_loc10}}
 }
 \value{
 the same tibble provided as input but with completed coordinates
 }
 \description{
-The function shkr_coord_trans fils the gaps in the site locations.
+The function \code{shkr_coord_trans} fils the gaps in the site locations.
 In some cases the place is known but not the exat site location. Then
 the place coordinates are used to fill the empty site coordinates.
 }

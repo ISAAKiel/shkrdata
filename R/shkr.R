@@ -1,6 +1,6 @@
 
 
-#' Title shkr2010_download downloads the shkr database from 2010 from the JMA data exchange platform
+#' \code{shkr2010_download} downloads the shkr database from 2010 from the JMA data exchange platform
 #'
 #' @param path path to the folder were the shkr db has to be stored
 #'
@@ -21,9 +21,9 @@ shkr2010_download <- function(path = "../2data"){
 
 
 
-#' Title load_shkr2010 Load shkr data
+#' \code{load_shkr2010} Load shkr data
 #'
-#' The function load_shkr2010 loads shkr data from
+#' The function \code{load_shkr2010} loads shkr data from
 #' the downloades shkr 2010 data set. It is required
 #' to downloads the data from https://www.jma.uni-kiel.de/en/research-projects/data-exchange-platform/shkr
 #' and unzip them.
@@ -101,7 +101,7 @@ load_shkr2010 <- function(path = "../2data/shkr2010/"){
 }
 
 
-#' Title shkr_filter_loc10 filters certain types of artefacts
+#' \code{shkr_filter_loc10} filters certain types of artefacts
 #'
 #' The function shkr_filter_loc10 filters certain artefact types
 #' from the table of artefacts. SHRK uses a facet classification.
@@ -112,7 +112,7 @@ load_shkr2010 <- function(path = "../2data/shkr2010/"){
 #' place in different branches. The wildcard "." can be used to
 #' filter for the same feature in different branches.
 #'
-#' @param data list of shkr tibbles as produced by load_shkr2010
+#' @param data list of shkr tibbles as produced by \code{load_shkr2010}
 #' @param a text string of material type to filter, starts with the letter A
 #' @param b text string of shape type to filter, starts with the letter b
 #' @param ctext string of decoration technique type to filter, starts with the letter c
@@ -140,14 +140,14 @@ shkr_filter_loc10 <- function(data, a = "A", b = "B", c = "C", d = "D"){
 }
 
 
-#' Title shkr_comp_loc10 completes information in loc10
+#' \code{shkr_comp_loc10} completes information in loc10
 #'
-#' The function shkr_comp_loc10 transferes information from
+#' The function \code{shkr_comp_loc10} transferes information from
 #' loc_01-loc_09 to loc_10 to make them directly available at loc_10
 #' level
 #'
-#' @param loc10sel artefact tibble as produced by shkr_filter_loc10
-#' @param data list of shkr tibbles as produced by load_shkr2010
+#' @param loc10sel artefact tibble as produced by \code{shkr_filter_loc10}
+#' @param data list of shkr tibbles as produced by \code{load_shkr2010}
 #'
 #' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
 #'
@@ -211,14 +211,14 @@ shkr_comp_loc10 <- function(loc10sel, data){
   return(loc_10_complete)
 }
 
-#' Title shkr_coord_trans transferes place coordinates to the sites level
+#' \code{shkr_coord_trans} transferes place coordinates to the sites level
 #' for unknown site locations
 #'
-#' The function shkr_coord_trans fils the gaps in the site locations.
+#' The function \code{shkr_coord_trans} fils the gaps in the site locations.
 #' In some cases the place is known but not the exat site location. Then
 #' the place coordinates are used to fill the empty site coordinates.
 #'
-#' @param data artefact tibble as produced by shkr_filter_loc10
+#' @param data artefact tibble as produced by \code{shkr_filter_loc10}
 #'
 #' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
 #'
@@ -237,9 +237,9 @@ shkr_coord_trans <- function(data){
 
 
 
-#' Titleshkr_filter_region filter a shkr tibble/dataframe to a certain spatial extent
+#' \code{shkr_filter_region} filter a shkr tibble/dataframe to a certain spatial extent
 #'
-#' @param data shkr tibble as produced by shkr_comp_loc10
+#' @param data shkr tibble as produced by \code{shkr_comp_loc10}
 #' @param ftype filter type: "coords", "loc01", "loc02", "loc03", "loc04", "loc05", "loc06"
 #' @param a integer loc_xx_id number
 #' @param x_range vector: c(minimal, maximal)
@@ -301,9 +301,9 @@ shkr_filter_region <- function(data, ftype = "loc01", a = 11, x_range = c(0,3597
 }
 
 
-#' Title shkr_filter_loc10_agg filters returns only artefacts from graves, settlements or fortifications
+#' \code{shkr_filter_loc10_agg} filters returns only artefacts from graves, settlements or fortifications
 #'
-#' @param data artefact tibble as produced by shkr_filter_loc10
+#' @param data artefact tibble as produced by \code{shkr_filter_loc10}
 #' @param focus filter category, "graves", "settlements", "fortifications"
 #'
 #' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
@@ -338,7 +338,7 @@ shkr_filter_loc10_agg <- function(data, focus = "graves"){
 
 
 
-#' Title herlperfunction to normalize divides the values in a row by the sum of the values
+#' herlperfunction to normalize divides the values in a row by the sum of the values
 #'
 #' @param a tibble or dataframe
 #'
@@ -351,11 +351,11 @@ shkr_filter_loc10_agg <- function(data, focus = "graves"){
 normalize <- function(a){a / sum(a, na.rm=TRUE)}
 
 
-#' Title shkr_ts type spectra calculation
+#' \code{shkr_ts type} spectra calculation
 #'
-#' The function shkr_ts calculates type spectra of types (=TS) beeing a contingency table with graves, sites or something else as rows and types as columns. TS are calculated for one typological facet only, since the comparisson of two facets is difficult and might be biased. The aggregation level, the units for which the occurence of types is counted can be "grave", "site" and "agg". In case of "grave" loc_08_id is used as key and in case of "site" loc_06_id is used. The user has to make sure, that the used features are restricted to graves. In case of "aggr", the user has to create a column named aggr which is used for this purpose.
+#' The function \code{shkr_ts calculates} type spectra of types (=TS) beeing a contingency table with graves, sites or something else as rows and types as columns. TS are calculated for one typological facet only, since the comparisson of two facets is difficult and might be biased. The aggregation level, the units for which the occurence of types is counted can be "grave", "site" and "agg". In case of "grave" loc_08_id is used as key and in case of "site" loc_06_id is used. The user has to make sure, that the used features are restricted to graves. In case of "aggr", the user has to create a column named aggr which is used for this purpose.
 #'
-#' @param features artefact tibble as produced by shkr_filter_loc10
+#' @param features artefact tibble as produced by \code{shkr_filter_loc10}
 #' @param facet typological facet, "a", "b", "c" or "d"
 #' @param aggr aggregation level, "grave", "site", "aggr"
 #' @param normal boolean, if TRUE, the contingencey table will be normalized (sum of columns = 1)
@@ -413,9 +413,9 @@ shkr_ts <- function(features, facet = "b", aggr = "grave", normal = TRUE){
 
 
 
-#' Title shkr_cul_dist calculates distance matrix
+#' \code{shkr_cul_dist} calculates distance matrix
 #'
-#' @param ts spectrum of types as produced by shkr_ts
+#' @param ts spectrum of types as produced by \code{shkr_ts}
 #'
 #' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
 #'
@@ -432,9 +432,9 @@ shkr_cul_dist <- function(ts){
 }
 
 
-#' Title shkr_net creates igraph network from distance matrix
+#' \code{shkr_net} creates igraph network from distance matrix
 #'
-#' @param dm distance matric as produced by shkr_cul_dist
+#' @param dm distance matric as produced by \code{shkr_cul_dist}
 #'
 #' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
 #'
@@ -453,11 +453,11 @@ shkr_net <- function(dm){
 
 
 
-#' Title print_subtypes prints subtypes of types
+#' \code{print_subtypes} prints subtypes of types
 #'
 #' The function print_subtypes prints and returns the subtypes of a type represented by the typestring containig a type code such as "B31". With the "descr" category it is also possible to submitt a textstring, for which is searched in the type description.
 #'
-#' @param data shkr database as loaded by load_shkr2010
+#' @param data shkr database as loaded by \code{load_shkr2010}
 #' @param typestring type code such as "B31" or "A3" or "B31.1". The dot "." is used als wildcard representing one digit.
 #' @param descr logical value, if TRUE the typestring is searched in the type description and not in the type code
 #'

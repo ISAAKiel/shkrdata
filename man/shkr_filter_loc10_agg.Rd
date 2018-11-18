@@ -2,12 +2,12 @@
 % Please edit documentation in R/shkr.R
 \name{shkr_filter_loc10_agg}
 \alias{shkr_filter_loc10_agg}
-\title{Title shkr_filter_loc10_agg filters returns only artefacts from graves, settlements or fortifications}
+\title{\code{shkr_filter_loc10_agg} filters returns only artefacts from graves, settlements or fortifications}
 \usage{
 shkr_filter_loc10_agg(data, focus = "graves")
 }
 \arguments{
-\item{data}{artefact tibble as produced by shkr_filter_loc10}
+\item{data}{artefact tibble as produced by \code{shkr_filter_loc10}}
 
 \item{focus}{filter category, "graves", "settlements", "fortifications"}
 }
@@ -15,10 +15,10 @@ shkr_filter_loc10_agg(data, focus = "graves")
 the same tibble provided as input but restricted to artefacts from specific aggregation types only
 }
 \description{
-Title shkr_filter_loc10_agg filters returns only artefacts from graves, settlements or fortifications
+\code{shkr_filter_loc10_agg} filters returns only artefacts from graves, settlements or fortifications
 }
 \examples{
-shkr_fibulae_agg <- shkr_filter_loc10_graves(shkr_fibeln_comp_coord)
+shkr_fibulae_agg <- shkr_filter_loc10_agg(shkr_fibeln_comp_coord)
 }
 \author{
 Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>

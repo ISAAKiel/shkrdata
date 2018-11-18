@@ -2,7 +2,7 @@
 % Please edit documentation in R/shkr.R
 \name{load_shkr2010}
 \alias{load_shkr2010}
-\title{Title load_shkr2010 Load shkr data}
+\title{\code{load_shkr2010} Load shkr data}
 \usage{
 load_shkr2010(path = "../2data/shkr2010/")
 }
@@ -13,7 +13,7 @@ load_shkr2010(path = "../2data/shkr2010/")
 a list of tibbles of the different data.
 }
 \description{
-The function load_shkr2010 loads shkr data from
+The function \code{load_shkr2010} loads shkr data from
 the downloades shkr 2010 data set. It is required
 to downloads the data from https://www.jma.uni-kiel.de/en/research-projects/data-exchange-platform/shkr
 and unzip them.

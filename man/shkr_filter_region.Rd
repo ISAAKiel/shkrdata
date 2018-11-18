@@ -2,13 +2,13 @@
 % Please edit documentation in R/shkr.R
 \name{shkr_filter_region}
 \alias{shkr_filter_region}
-\title{Titleshkr_filter_region filter a shkr tibble/dataframe to a certain spatial extent}
+\title{\code{shkr_filter_region} filter a shkr tibble/dataframe to a certain spatial extent}
 \usage{
 shkr_filter_region(data, ftype = "loc01", a = 11, x_range = c(0,
   3597713), y_range = c(0, 5664752))
 }
 \arguments{
-\item{data}{shkr tibble as produced by shkr_comp_loc10}
+\item{data}{shkr tibble as produced by \code{shkr_comp_loc10}}
 
 \item{ftype}{filter type: "coords", "loc01", "loc02", "loc03", "loc04", "loc05", "loc06"}
 
@@ -22,7 +22,7 @@ shkr_filter_region(data, ftype = "loc01", a = 11, x_range = c(0,
 a tibble as used as input but restricted to a certain area
 }
 \description{
-Titleshkr_filter_region filter a shkr tibble/dataframe to a certain spatial extent
+\code{shkr_filter_region} filter a shkr tibble/dataframe to a certain spatial extent
 }
 \examples{
 shkr_fibulae_comp_coord <- shkr_filter_region(shkr_fibulae_comp_coord)

@@ -2,18 +2,18 @@
 % Please edit documentation in R/shkr.R
 \name{shkr_net}
 \alias{shkr_net}
-\title{Title shkr_net creates igraph network from distance matrix}
+\title{\code{shkr_net} creates igraph network from distance matrix}
 \usage{
 shkr_net(dm)
 }
 \arguments{
-\item{dm}{distance matric as produced by shkr_cul_dist}
+\item{dm}{distance matric as produced by \code{shkr_cul_dist}}
 }
 \value{
 igraph object
 }
 \description{
-Title shkr_net creates igraph network from distance matrix
+\code{shkr_net} creates igraph network from distance matrix
 }
 \examples{
 snet <- shkr_net(dm)

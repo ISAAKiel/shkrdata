@@ -2,12 +2,12 @@
 % Please edit documentation in R/shkr.R
 \name{shkr_filter_loc10}
 \alias{shkr_filter_loc10}
-\title{Title shkr_filter_loc10 filters certain types of artefacts}
+\title{\code{shkr_filter_loc10} filters certain types of artefacts}
 \usage{
 shkr_filter_loc10(data, a = "A", b = "B", c = "C", d = "D")
 }
 \arguments{
-\item{data}{list of shkr tibbles as produced by load_shkr2010}
+\item{data}{list of shkr tibbles as produced by \code{load_shkr2010}}
 
 \item{a}{text string of material type to filter, starts with the letter A}
 

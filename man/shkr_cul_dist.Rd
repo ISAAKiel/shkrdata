@@ -2,18 +2,18 @@
 % Please edit documentation in R/shkr.R
 \name{shkr_cul_dist}
 \alias{shkr_cul_dist}
-\title{Title shkr_cul_dist calculates distance matrix}
+\title{\code{shkr_cul_dist} calculates distance matrix}
 \usage{
 shkr_cul_dist(ts)
 }
 \arguments{
-\item{ts}{spectrum of types as produced by shkr_ts}
+\item{ts}{spectrum of types as produced by \code{shkr_ts}}
 }
 \value{
 distance matrix
 }
 \description{
-Title shkr_cul_dist calculates distance matrix
+\code{shkr_cul_dist} calculates distance matrix
 }
 \examples{
 dm <- shkr_cul_dist(ts)
