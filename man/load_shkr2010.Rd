@@ -4,7 +4,7 @@
 \alias{load_shkr2010}
 \title{\code{load_shkr2010} Load shkr data}
 \usage{
-load_shkr2010(path = "../2data/shkr2010/")
+load_shkr2010(path = ".")
 }
 \arguments{
 \item{path}{Path to the downloades and unziped shkr folder}

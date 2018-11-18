@@ -4,7 +4,7 @@
 \alias{shkr2010_download}
 \title{\code{shkr2010_download} downloads the shkr database from 2010 from the JMA data exchange platform}
 \usage{
-shkr2010_download(path = "../2data")
+shkr2010_download(path = ".")
 }
 \arguments{
 \item{path}{path to the folder were the shkr db has to be stored}

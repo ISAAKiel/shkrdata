@@ -127,15 +127,18 @@ devtools::install_gitlab("oliver.nakoinz/shkrdata.git")
 
 First, we have to download the data.
 
-```{r download, eval=FALSE}
-shkrdata::shkr2010_download()
+```{r download}
+shkrdata::shkr2010_download(path = ".")
 ```
 
 All filed of the downloaded data are loaded into a list containing tibbles.
 
 ```{r load}
-shkr <- shkrdata::load_shkr2010()
+shkr <- shkrdata::load_shkr2010("./shkr2010/")
 ```
+
+/home/fon/daten/analyse/shkrdata/vignettes/shkr2010/loc_01.csv
+                               ./vignettes/shkr2010/loc_01.csv
 
 # Filter and complete data
 
@@ -222,5 +225,8 @@ shkrdata::print_subtypes(shkr, typestring = "Ompha", descr = TRUE)
 ```
 
 
+```{r cleaning, include=FALSE}
+unlink("./shkr2010/", recursive=TRUE) 
+```
 
 
