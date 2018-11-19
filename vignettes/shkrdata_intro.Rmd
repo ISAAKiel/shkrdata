@@ -116,22 +116,24 @@ dfgraph1
 
 # Install
 
+We install the `moin` package from github and the `shkrdata` package from gitlab. The `devtools` packages is required for this process.
+
 ```{r inst, eval=FALSE}
 library(devtools)
 devtools::install_github("CRC1266-A2/moin")
 
-devtools::install_gitlab("oliver.nakoinz/shkrdata.git")
+#devtools::install_gitlab("oliver.nakoinz/shkrdata.git")
 # or
-install.packages("./shkrdata_0.1.2.tar.gz", repos = NULL, type="source")
-#utils::download.file("https://gitlab.com/oliver.nakoinz/shkrdata.git", "shkrdata")
+utils::download.file("https://gitlab.com/oliver.nakoinz/OliverNakoinz/blob/master/packages/shkrdata_0.1.2.tar.gz", "shkrdata_0.1.2.tar.gz")
+install.packages("shkrdata_0.1.2.tar.gz", repos = NULL, type="source")
 ```
-
 
 # Download and load data
 
-First, we have to download the data.
+First, we load the package and download the data.
 
 ```{r download}
+library(shkrdata)
 shkrdata::shkr2010_download(path = ".")
 ```
 

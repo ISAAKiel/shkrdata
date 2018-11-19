@@ -36,7 +36,7 @@ shkr2010_download <- function(path = "."){
 #'
 #' @examples
 #' shkr <- load_shkr2010()
-load_shkr2010 <- function(path = "."){
+load_shkr2010 <- function(path = "./shkr2010/"){
   require(readr)
   require(dplyr)
   loc_01 <- readr::read_delim(paste(path, "loc_01.csv", sep = ""), ";", col_types = cols(loc01_id = col_integer()), escape_double = FALSE, locale = locale(date_names = "de"), trim_ws = TRUE)
