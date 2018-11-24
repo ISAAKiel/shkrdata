@@ -127,7 +127,7 @@ devtools::install_github("ISAAKiel/shkrdata")
 #utils::download.file("https://gitlab.com/oliver.nakoinz/OliverNakoinz/blob/master/packages/shkrdata_0.1.2.tar.gz", "shkrdata_0.1.2.tar.gz")
 #install.packages("shkrdata_0.1.2.tar.gz", repos = NULL, type="source")
 ```
-
+ 
 # Download and load data
 
 First, we load the package and download the data.
