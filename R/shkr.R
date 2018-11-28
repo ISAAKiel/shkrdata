@@ -383,26 +383,26 @@ shkr_ts <- function(features, facet = "b", aggr = "grave", normal = TRUE){
     }
 
   if(facet == "a"){
-    features_agg <- data.frame(type=features$loc10_typ_typ_a, nodes=nodes)
-    graves_typelist <- moin::create_type_generator(features, type_col="loc10_typ_typ_a", pre_size = 1)
+    features_agg <- data.frame(type = features$loc10_typ_typ_a, nodes = nodes)
+    graves_typelist <- moin::create_type_generator(features, type_col = "loc10_typ_typ_a", pre_size = 1)
     graves_type_spectra <- moin::create_typespectra(aggr_fea=features_agg, graves_typelist)
   }
 
   if(facet == "b"){
-  features_agg <- data.frame(type=features$loc10_typ_typ_b, nodes=features$loc08_id)
-  graves_typelist <- moin::create_type_generator(features, type_col="loc10_typ_typ_b", pre_size = 1)
+  features_agg <- data.frame(type = features$loc10_typ_typ_b, nodes = nodes)
+  graves_typelist <- moin::create_type_generator(features, type_col = "loc10_typ_typ_b", pre_size = 1)
   graves_type_spectra <- moin::create_typespectra(aggr_fea=features_agg, graves_typelist)
   }
 
   if(facet == "c"){
-    features_agg <- data.frame(type=features$loc10_typ_typ_c, nodes=features$loc08_id)
-    graves_typelist <- moin::create_type_generator(features, type_col="loc10_typ_typ_c", pre_size = 1)
+    features_agg <- data.frame(type = features$loc10_typ_typ_c, nodes = nodes)
+    graves_typelist <- moin::create_type_generator(features, type_col = "loc10_typ_typ_c", pre_size = 1)
     graves_type_spectra <- moin::create_typespectra(aggr_fea=features_agg, graves_typelist)
   }
 
   if(facet == "d"){
-    features_agg <- data.frame(type=features$loc10_typ_typ_d, nodes=features$loc08_id)
-    graves_typelist <- moin::create_type_generator(features, type_col="loc10_typ_typ_d", pre_size = 1)
+    features_agg <- data.frame(type = features$loc10_typ_typ_d, nodes = nodes)
+    graves_typelist <- moin::create_type_generator(features, type_col = "loc10_typ_typ_d", pre_size = 1)
     graves_type_spectra <- moin::create_typespectra(aggr_fea=features_agg, graves_typelist)
   }
 
