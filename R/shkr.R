@@ -352,11 +352,11 @@ normalize <- function(a){a / sum(a, na.rm=TRUE)}
 
 #' \code{shkr_ts type} spectra calculation
 #'
-#' The function \code{shkr_ts calculates} type spectra of types (=TS) beeing a contingency table with graves, sites or something else as rows and types as columns. TS are calculated for one typological facet only, since the comparisson of two facets is difficult and might be biased. The aggregation level, the units for which the occurence of types is counted can be "grave", "site" and "agg". In case of "grave" loc_08_id is used as key and in case of "site" loc_06_id is used. The user has to make sure, that the used features are restricted to graves. In case of "aggr", the user has to create a column named aggr which is used for this purpose.
+#' The function \code{shkr_ts calculates} type spectra of types (=TS) beeing a contingency table with graves, sites or something else as rows and types as columns. TS are calculated for one typological facet only, since the comparisson of two facets is difficult and might be biased. The aggregation level, the units for which the occurence of types is counted can be "grave", "site", "place" and "agg". In case of "grave" loc_08_id is used as key and in case of "site" loc_06_id is used. The user has to make sure, that the used features are restricted to graves. In case of "aggr", the user has to create a column named aggr which is used for this purpose.
 #'
 #' @param features artefact tibble as produced by \code{shkr_filter_loc10}
 #' @param facet typological facet, "a", "b", "c" or "d"
-#' @param aggr aggregation level, "grave", "site", "aggr"
+#' @param aggr aggregation level, "grave", "site", "place", aggr"
 #' @param normal boolean, if TRUE, the contingencey table will be normalized (sum of columns = 1)
 #'
 #' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
@@ -369,15 +369,18 @@ normalize <- function(a){a / sum(a, na.rm=TRUE)}
 shkr_ts <- function(features, facet = "b", aggr = "grave", normal = TRUE){
   require(moin)
 
-  if(aggr == "grave"){
+    if(aggr == "grave"){
     nodes <- features$loc08_id
-  }
-  if(aggr == "site"){
+    }
+    if(aggr == "site"){
     nodes <- features$loc06_id
-  }
-  if(aggr == "aggr"){
+    }
+    if(aggr == "place"){
+        nodes <- features$loc05_id
+    }
+    if(aggr == "aggr"){
     nodes <- features$aggr
-  }
+    }
 
   if(facet == "a"){
     features_agg <- data.frame(type=features$loc10_typ_typ_a, nodes=nodes)
