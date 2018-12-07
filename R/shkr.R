@@ -114,8 +114,8 @@ load_shkr2010 <- function(path = "./shkr2010/"){
 #' @param data list of shkr tibbles as produced by \code{load_shkr2010}
 #' @param a text string of material type to filter, starts with the letter A
 #' @param b text string of shape type to filter, starts with the letter b
-#' @param ctext string of decoration technique type to filter, starts with the letter c
-#' @param dtext string of decoration element type to filter, starts with the letter d
+#' @param c text string of decoration technique type to filter, starts with the letter c
+#' @param d text string of decoration element type to filter, starts with the letter d
 #'
 #' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
 #'
