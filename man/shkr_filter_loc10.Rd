@@ -13,9 +13,9 @@ shkr_filter_loc10(data, a = "A", b = "B", c = "C", d = "D")
 
 \item{b}{text string of shape type to filter, starts with the letter b}
 
-\item{ctext}{string of decoration technique type to filter, starts with the letter c}
+\item{c}{text string of decoration technique type to filter, starts with the letter c}
 
-\item{dtext}{string of decoration element type to filter, starts with the letter d}
+\item{d}{text string of decoration element type to filter, starts with the letter d}
 }
 \value{
 tibble/dataframe containing the filterd loc_10 information
