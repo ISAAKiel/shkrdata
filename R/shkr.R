@@ -559,19 +559,19 @@ shkr_filter_region_site <- function(data, sites ,ftype = "loc01", a = 11, x_rang
         rename(x_ort = x)  %>%
         rename(y_ort = y)  %>%
         dplyr::inner_join(loc_05, by = c("loc06_loc05_id" = "loc05_id")) %>%
-        dplyr::select(loc06_id, loc06_loc05_id, loc05_loc04_id,loc06_nam, loc06_typ,  loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, x_ort, y_ort) %>%
+        dplyr::select(loc06_id, loc06_loc05_id, loc05_loc04_id,loc06_nam, loc06_typ, loc06_dat_allg, loc06_huegelz, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, x_ort, y_ort) %>%
         rename(loc05_id = loc06_loc05_id) %>%
         dplyr::inner_join(loc_04, by = c("loc05_loc04_id" = "loc04_id")) %>%
-        dplyr::select(loc06_id, loc05_id, loc05_loc04_id, loc04_loc03_id, loc06_nam, loc06_typ,  loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, x_ort, y_ort) %>%
+        dplyr::select(loc06_id, loc05_id, loc05_loc04_id, loc04_loc03_id, loc06_nam, loc06_typ, loc06_dat_allg, loc06_huegelz, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, x_ort, y_ort) %>%
         rename(loc04_id = loc05_loc04_id) %>%
         dplyr::inner_join(loc_03, by = c("loc04_loc03_id" = "loc03_id")) %>%
-        dplyr::select(loc06_id, loc05_id, loc04_id, loc04_loc03_id, loc03_loc02_id,loc06_nam, loc06_typ,  loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, x_ort, y_ort) %>%
+        dplyr::select(loc06_id, loc05_id, loc04_id, loc04_loc03_id, loc03_loc02_id,loc06_nam, loc06_typ, loc06_dat_allg, loc06_huegelz, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, x_ort, y_ort) %>%
         rename(loc03_id = loc04_loc03_id) %>%
         dplyr::inner_join(loc_02, by = c("loc03_loc02_id" = "loc02_id")) %>%
-        dplyr::select(loc06_id, loc05_id, loc04_id, loc03_id, loc03_loc02_id, loc02_loc01_id, loc06_nam, loc06_typ,  loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, x_ort, y_ort) %>%
+        dplyr::select(loc06_id, loc05_id, loc04_id, loc03_id, loc03_loc02_id, loc02_loc01_id, loc06_nam, loc06_typ, loc06_dat_allg, loc06_huegelz, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, x_ort, y_ort) %>%
         rename(loc02_id = loc03_loc02_id) %>%
         dplyr::inner_join(loc_01, by = c("loc02_loc01_id" = "loc01_id")) %>%
-        dplyr::select(loc06_id, loc05_id, loc04_id, loc03_id, loc02_id, loc02_loc01_id,loc06_nam, loc06_typ,  loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, x_ort, y_ort) %>%
+        dplyr::select(loc06_id, loc05_id, loc04_id, loc03_id, loc02_id, loc02_loc01_id,loc06_nam, loc06_typ, loc06_dat_allg, loc06_huegelz, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, x_ort, y_ort) %>%
         rename(loc01_id = loc02_loc01_id)
 
     if(ftype == "coords"){
