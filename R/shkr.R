@@ -489,3 +489,53 @@ print_subtypes <- function(data, typestring = "B", descr = FALSE){
     return(fdata)
 }
 
+#' \code{shkr_filter_loc06} filters certain types of sites
+#'
+#' The function shkr_filter_loc06 filters certain types of sites.
+#'                      1 = archaeolgical object,
+#'                      2 = depot,
+#'                      3 = singular object,
+#'                      4 = grave
+#'                      5 = grvae/settlement/production
+#'                      6 = infrastructure
+#'                      7 = cult or religion
+#'                      8 = settlement/production
+#'                      9 = settlement/production/cult or religion
+#'                      10 = others
+#'                      12 = unknown
+#'
+#' @param data list of shkr tibbles as produced by \code{load_shkr2010}
+#' @param type numeric vector of types of sites (see thesaurus above)
+#'                      1 = archaeolgical object,
+#'                      2 = depot,
+#'                      3 = singular object,
+#'                      4 = grave
+#'                      5 = grvae/settlement/production
+#'                      6 = infrastructure
+#'                      7 = cult or religion
+#'                      8 = settlement/production
+#'                      9 = settlement/production/cult or religion
+#'                      10 = others
+#'                      12 = unknown
+#'
+#' @author Franziska Faupel <\email{ffaupel@@ufg.uni-kiel.de}>
+#'
+#' @return tibble/dataframe containing the filterd loc_06 information
+#' @export
+#'
+#' @examples
+#' type <- 4
+#' shkr_grave <- shkr_filter_loc06(shkr, type)
+#'
+#' type <- c(5,8,9)
+#' shkr_sett <- shkr_filter_loc06(shkr, type)
+#'
+shkr_filter_loc06 <- function(data, type){
+    require(stringr)
+    require(magrittr)
+    data[[6]] %>%
+        dplyr::select(loc06_id, loc06_loc05_id, loc06_nam, loc06_typ, loc06_dat_allg, loc06_huegelz, loc06_text_beschr, loc06_text_bem, loc06_text_lit, x, y) %>%
+        dplyr::filter(loc06_typ == type) ->
+        sites
+    return(sites)
+}
