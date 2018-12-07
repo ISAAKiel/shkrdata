@@ -506,17 +506,6 @@ print_subtypes <- function(data, typestring = "B", descr = FALSE){
 #'
 #' @param data list of shkr tibbles as produced by \code{load_shkr2010}
 #' @param type numeric vector of types of sites (see thesaurus above)
-#'                      1 = archaeolgical object,
-#'                      2 = depot,
-#'                      3 = singular object,
-#'                      4 = grave
-#'                      5 = grvae/settlement/production
-#'                      6 = infrastructure
-#'                      7 = cult or religion
-#'                      8 = settlement/production
-#'                      9 = settlement/production/cult or religion
-#'                      10 = others
-#'                      12 = unknown
 #'
 #' @author Franziska Faupel <\email{ffaupel@@ufg.uni-kiel.de}>
 #'
