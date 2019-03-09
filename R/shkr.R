@@ -2,7 +2,7 @@
 
 #' \code{shkr2010_download} downloads the shkr database from 2010 from the JMA data exchange platform
 #'
-#' @param path path to the folder were the shkr db has to be stored
+#' @param path path to the folder were the shkr database has to be stored
 #'
 #' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
 #'
@@ -22,12 +22,12 @@ shkr2010_download <- function(path = "."){
 
 #' \code{load_shkr2010} Load shkr data
 #'
-#' The function \code{load_shkr2010} loads shkr data from
-#' the downloades shkr 2010 data set. It is required
-#' to downloads the data from https://www.jma.uni-kiel.de/en/research-projects/data-exchange-platform/shkr
-#' and unzip them.
+#' The function \code{load_shkr2010} loads shkr data from 
+#' the downloads shkr 2010 data set. It is required 
+#' to downloads the data from https://www.jma.uni-kiel.de/en/research-projects/data-exchange-platform/shkr 
+#' and unzip them. 
 #'
-#' @param path Path to the downloades and unziped shkr folder
+#' @param path Path to the downloads and unzips shkr folder
 #'
 #' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
 #'
@@ -105,10 +105,10 @@ load_shkr2010 <- function(path = "./shkr2010/"){
 #' The function shkr_filter_loc10 filters certain artefact types
 #' from the table of artefacts. SHRK uses a facet classification.
 #' Facet a contains material, facet b shape, facet c decoration technique
-#' and facet d decoration elements. Insite the facets a
-#' hierarchical classfication is used. The classification includes
+#' and facet d decoration elements. Inside the facets a
+#' hierarchical classification is used. The classification includes
 #' isomorph branches which have the same next feature at the same
-#' place in different branches. The wildcard "." can be used to
+#' place in different branches. The wild-card "." can be used to
 #' filter for the same feature in different branches.
 #'
 #' @param data list of shkr tibbles as produced by \code{load_shkr2010}
@@ -119,7 +119,7 @@ load_shkr2010 <- function(path = "./shkr2010/"){
 #'
 #' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
 #'
-#' @return tibble/dataframe containing the filterd loc_10 information
+#' @return tibble/dataframe containing the filtered loc_10 information
 #' @export
 #'
 #' @examples
@@ -213,7 +213,7 @@ shkr_comp_loc10 <- function(loc10sel, data){
 #' \code{shkr_coord_trans} transferes place coordinates to the sites level
 #' for unknown site locations
 #'
-#' The function \code{shkr_coord_trans} fils the gaps in the site locations.
+#' The function \code{shkr_coord_trans} fills the gaps in the site locations.
 #' In some cases the place is known but not the exat site location. Then
 #' the place coordinates are used to fill the empty site coordinates.
 #'
@@ -337,7 +337,7 @@ shkr_filter_loc10_agg <- function(data, focus = "graves"){
 
 
 
-#' herlperfunction to normalize divides the values in a row by the sum of the values
+#' helper-function to normalize divides the values in a row by the sum of the values
 #'
 #' @param a tibble or dataframe
 #'
@@ -350,14 +350,14 @@ shkr_filter_loc10_agg <- function(data, focus = "graves"){
 normalize <- function(a){a / sum(a, na.rm=TRUE)}
 
 
-#' \code{shkr_ts type} spectra calculation
+#' \code{shkr_ts} type spectra calculation
 #'
-#' The function \code{shkr_ts calculates} type spectra of types (=TS) beeing a contingency table with graves, sites or something else as rows and types as columns. TS are calculated for one typological facet only, since the comparisson of two facets is difficult and might be biased. The aggregation level, the units for which the occurence of types is counted can be "grave", "site", "place" and "agg". In case of "grave" loc_08_id is used as key and in case of "site" loc_06_id is used. The user has to make sure, that the used features are restricted to graves. In case of "aggr", the user has to create a column named aggr which is used for this purpose.
+#' The function \code{shkr_ts} calculates type spectra of types (=TS) being a contingency table with graves, sites or something else as rows and types as columns. TS are calculated for one typological facet only, since the comparison of two facets is difficult and might be biased. The aggregation level, the units for which the occurrence of types is counted can be "grave", "site", "place" and "agg". In case of "grave" loc_08_id is used as key and in case of "site" loc_06_id is used. The user has to make sure, that the used features are restricted to graves. In case of "aggr", the user has to create a column named aggr which is used for this purpose.
 #'
 #' @param features artefact tibble as produced by \code{shkr_filter_loc10}
 #' @param facet typological facet, "a", "b", "c" or "d"
 #' @param aggr aggregation level, "grave", "site", "place", aggr"
-#' @param normal boolean, if TRUE, the contingencey table will be normalized (sum of columns = 1)
+#' @param normal boolean, if TRUE, the contingency table will be normalized (sum of columns = 1)
 #'
 #' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
 #'
@@ -367,50 +367,50 @@ normalize <- function(a){a / sum(a, na.rm=TRUE)}
 #' @examples
 #' ts <- shkr_ts(shkr_fibulae_graves)
 shkr_ts <- function(features, facet = "b", aggr = "grave", normal = TRUE){
-  require(moin)
+    require(moin)
 
     if(aggr == "grave"){
-    nodes <- features$loc08_id
+        nodes <- features$loc08_id
     }
     if(aggr == "site"){
-    nodes <- features$loc06_id
+        nodes <- features$loc06_id
     }
     if(aggr == "place"){
         nodes <- features$loc05_id
     }
     if(aggr == "aggr"){
-    nodes <- features$aggr
+        nodes <- features$aggr
     }
 
-  if(facet == "a"){
-    features_agg <- data.frame(type = features$loc10_typ_typ_a, nodes = nodes)
-    graves_typelist <- moin::create_type_generator(features, type_col = "loc10_typ_typ_a", pre_size = 1)
-    graves_type_spectra <- moin::create_typespectra(aggr_fea=features_agg, graves_typelist)
-  }
+    if(facet == "a"){
+        features_agg <- data.frame(type = features$loc10_typ_typ_a, nodes = nodes)
+        graves_typelist <- moin::create_type_generator(features, type_col = "loc10_typ_typ_a", pre_size = 1)
+        graves_type_spectra <- moin::create_typespectra(aggr_fea=features_agg, graves_typelist)
+    }
 
-  if(facet == "b"){
-  features_agg <- data.frame(type = features$loc10_typ_typ_b, nodes = nodes)
-  graves_typelist <- moin::create_type_generator(features, type_col = "loc10_typ_typ_b", pre_size = 1)
-  graves_type_spectra <- moin::create_typespectra(aggr_fea=features_agg, graves_typelist)
-  }
+    if(facet == "b"){
+        features_agg <- data.frame(type = features$loc10_typ_typ_b, nodes = nodes)
+        graves_typelist <- moin::create_type_generator(features, type_col = "loc10_typ_typ_b", pre_size = 1)
+        graves_type_spectra <- moin::create_typespectra(aggr_fea=features_agg, graves_typelist)
+    }
 
-  if(facet == "c"){
-    features_agg <- data.frame(type = features$loc10_typ_typ_c, nodes = nodes)
-    graves_typelist <- moin::create_type_generator(features, type_col = "loc10_typ_typ_c", pre_size = 1)
-    graves_type_spectra <- moin::create_typespectra(aggr_fea=features_agg, graves_typelist)
-  }
+    if(facet == "c"){
+        features_agg <- data.frame(type = features$loc10_typ_typ_c, nodes = nodes)
+        graves_typelist <- moin::create_type_generator(features, type_col = "loc10_typ_typ_c", pre_size = 1)
+        graves_type_spectra <- moin::create_typespectra(aggr_fea=features_agg, graves_typelist)
+    }
 
-  if(facet == "d"){
-    features_agg <- data.frame(type = features$loc10_typ_typ_d, nodes = nodes)
-    graves_typelist <- moin::create_type_generator(features, type_col = "loc10_typ_typ_d", pre_size = 1)
-    graves_type_spectra <- moin::create_typespectra(aggr_fea=features_agg, graves_typelist)
-  }
+    if(facet == "d"){
+        features_agg <- data.frame(type = features$loc10_typ_typ_d, nodes = nodes)
+        graves_typelist <- moin::create_type_generator(features, type_col = "loc10_typ_typ_d", pre_size = 1)
+        graves_type_spectra <- moin::create_typespectra(aggr_fea=features_agg, graves_typelist)
+    }
 
-  if(normal == TRUE){
-    graves_type_spectra[2:length(graves_type_spectra[1,])] <- t(apply(graves_type_spectra[2:length(graves_type_spectra[1,])], 1, normalize))
-  }
+    if(normal == TRUE){
+        graves_type_spectra[2:length(graves_type_spectra[1,])] <- t(apply(graves_type_spectra[2:length(graves_type_spectra[1,])], 1, normalize))
+    }
 
-  return(graves_type_spectra)
+    return(graves_type_spectra)
 }
 
 
@@ -436,7 +436,7 @@ shkr_cul_dist <- function(ts){
 
 #' \code{shkr_net} creates igraph network from distance matrix
 #'
-#' @param dm distance matric as produced by \code{shkr_cul_dist}
+#' @param dm distance matrix as produced by \code{shkr_cul_dist}
 #'
 #' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
 #'
@@ -453,15 +453,13 @@ shkr_net <- function(dm){
 }
 
 
-
-
 #' \code{print_subtypes} prints subtypes of types
 #'
-#' The function print_subtypes prints and returns the subtypes of a type represented by the typestring containig a type code such as "B31". With the "descr" category it is also possible to submitt a textstring, for which is searched in the type description.
+#' The function print_subtypes prints and returns the subtypes of a type represented by the type-string containing a type code such as "B31". With the "descr" category it is also possible to submit a text-string, for which is searched in the type description.
 #'
 #' @param data shkr database as loaded by \code{load_shkr2010}
-#' @param typestring type code such as "B31" or "A3" or "B31.1". The dot "." is used als wildcard representing one digit.
-#' @param descr logical value, if TRUE the typestring is searched in the type description and not in the type code
+#' @param type-string type code such as "B31" or "A3" or "B31.1". The dot "." is used as wild-card representing one digit.
+#' @param descr logical value, if TRUE the type-string is searched in the type description and not in the type code
 #'
 #' @author Oliver Nakoinz <oliver.nakoinz@ufg.uni-kiel.de>
 #'
