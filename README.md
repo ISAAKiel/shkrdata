@@ -39,3 +39,7 @@ devtools::install_github("ISAAKiel/shkrdata")
 ## References
 
 Nakoinz, O. 2013. Archäologische Kulturgeographie der ältereisenzeitlichen Zentralorte Südwestdeutschlands. Bonn: Habelt.
+
+## Licence
+
+`shkrdata` is released under the [GNU General Public Licence, version 3](http://www.r-project.org/Licenses/GPL-3). Comments and feedback are welcome, as are code contributions.
