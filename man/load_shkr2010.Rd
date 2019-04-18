@@ -4,17 +4,17 @@
 \alias{load_shkr2010}
 \title{\code{load_shkr2010} Load shkr data}
 \usage{
-load_shkr2010(path = ".")
+load_shkr2010(path = "./shkr2010/")
 }
 \arguments{
-\item{path}{Path to the downloades and unziped shkr folder}
+\item{path}{Path to the downloads and unzips shkr folder}
 }
 \value{
 a list of tibbles of the different data.
 }
 \description{
 The function \code{load_shkr2010} loads shkr data from
-the downloades shkr 2010 data set. It is required
+the downloads shkr 2010 data set. It is required
 to downloads the data from https://www.jma.uni-kiel.de/en/research-projects/data-exchange-platform/shkr
 and unzip them.
 }

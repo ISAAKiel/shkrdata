@@ -2,7 +2,7 @@
 % Please edit documentation in R/shkr.R
 \name{shkr_ts}
 \alias{shkr_ts}
-\title{\code{shkr_ts type} spectra calculation}
+\title{\code{shkr_ts} type spectra calculation}
 \usage{
 shkr_ts(features, facet = "b", aggr = "grave", normal = TRUE)
 }
@@ -13,13 +13,13 @@ shkr_ts(features, facet = "b", aggr = "grave", normal = TRUE)
 
 \item{aggr}{aggregation level, "grave", "site", "place", aggr"}
 
-\item{normal}{boolean, if TRUE, the contingencey table will be normalized (sum of columns = 1)}
+\item{normal}{boolean, if TRUE, the contingency table will be normalized (sum of columns = 1)}
 }
 \value{
 type spectra (=contingency table) with rows = graves or sites and columns = types
 }
 \description{
-The function \code{shkr_ts calculates} type spectra of types (=TS) beeing a contingency table with graves, sites or something else as rows and types as columns. TS are calculated for one typological facet only, since the comparisson of two facets is difficult and might be biased. The aggregation level, the units for which the occurence of types is counted can be "grave", "site", "place" and "agg". In case of "grave" loc_08_id is used as key and in case of "site" loc_06_id is used. The user has to make sure, that the used features are restricted to graves. In case of "aggr", the user has to create a column named aggr which is used for this purpose.
+The function \code{shkr_ts} calculates type spectra of types (=TS) being a contingency table with graves, sites or something else as rows and types as columns. TS are calculated for one typological facet only, since the comparison of two facets is difficult and might be biased. The aggregation level, the units for which the occurrence of types is counted can be "grave", "site", "place" and "agg". In case of "grave" loc_08_id is used as key and in case of "site" loc_06_id is used. The user has to make sure, that the used features are restricted to graves. In case of "aggr", the user has to create a column named aggr which is used for this purpose.
 }
 \examples{
 ts <- shkr_ts(shkr_fibulae_graves)

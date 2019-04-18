@@ -7,7 +7,7 @@
 shkr_net(dm)
 }
 \arguments{
-\item{dm}{distance matric as produced by \code{shkr_cul_dist}}
+\item{dm}{distance matrix as produced by \code{shkr_cul_dist}}
 }
 \value{
 igraph object

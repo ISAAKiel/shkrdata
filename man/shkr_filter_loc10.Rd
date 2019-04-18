@@ -18,16 +18,16 @@ shkr_filter_loc10(data, a = "A", b = "B", c = "C", d = "D")
 \item{d}{text string of decoration element type to filter, starts with the letter d}
 }
 \value{
-tibble/dataframe containing the filterd loc_10 information
+tibble/dataframe containing the filtered loc_10 information
 }
 \description{
 The function shkr_filter_loc10 filters certain artefact types
 from the table of artefacts. SHRK uses a facet classification.
 Facet a contains material, facet b shape, facet c decoration technique
-and facet d decoration elements. Insite the facets a
-hierarchical classfication is used. The classification includes
+and facet d decoration elements. Inside the facets a
+hierarchical classification is used. The classification includes
 isomorph branches which have the same next feature at the same
-place in different branches. The wildcard "." can be used to
+place in different branches. The wild-card "." can be used to
 filter for the same feature in different branches.
 }
 \examples{

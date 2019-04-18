@@ -2,7 +2,7 @@
 % Please edit documentation in R/shkr.R
 \name{normalize}
 \alias{normalize}
-\title{herlperfunction to normalize divides the values in a row by the sum of the values}
+\title{helper-function to normalize divides the values in a row by the sum of the values}
 \usage{
 normalize(a)
 }
@@ -13,7 +13,7 @@ normalize(a)
 the same dataframe with normalized values
 }
 \description{
-herlperfunction to normalize divides the values in a row by the sum of the values
+helper-function to normalize divides the values in a row by the sum of the values
 }
 \examples{
 

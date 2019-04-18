@@ -14,7 +14,7 @@ shkr_coord_trans(data)
 the same tibble provided as input but with completed coordinates
 }
 \description{
-The function \code{shkr_coord_trans} fils the gaps in the site locations.
+The function \code{shkr_coord_trans} fills the gaps in the site locations.
 In some cases the place is known but not the exat site location. Then
 the place coordinates are used to fill the empty site coordinates.
 }
