@@ -335,7 +335,34 @@ shkr_filter_loc10_agg <- function(data, focus = "graves"){
   return(fdata)
 }
 
+#' \code{shkr_filter_dat} filter a shkr tibble/dataframe to a certain dating
+#'
+#' @param data shkr tibble as produced by \code{shkr_comp_loc10}
+#' @param dating filter type: "dating", numerical according to thesaurus
+#' @param range logical, TRUE: dating names all desired dates (default), FALSE: names undesired names
+#'
+#' @author Franziska Faupel <\email{ffaupel@@ufg.uni-kiel.de}>
+#'
+#' @return a tibble as used as input but restricted to a certain dating
+#' @export
+#'
+shkr_filter_dat <- function(data, dating, range=TRUE){
+    require(magrittr)
+    if(range == TRUE){
+        data %>%
+            dplyr::filter(loc06_dat_allg %in% dating) ->
+            fdata
+    }
 
+    if(range == FALSE){
+        `%not_in%` <- purrr::negate(`%in%`)
+        data %>%
+            dplyr::filter(loc06_dat_allg %not_in% dating) ->
+            fdata
+    }
+
+    return(fdata)
+}
 
 #' helper-function to normalize divides the values in a row by the sum of the values
 #'
