@@ -22,10 +22,10 @@ shkr2010_download <- function(path = "."){
 
 #' \code{load_shkr2010} Load shkr data
 #'
-#' The function \code{load_shkr2010} loads shkr data from 
-#' the downloads shkr 2010 data set. It is required 
-#' to downloads the data from https://www.jma.uni-kiel.de/en/research-projects/data-exchange-platform/shkr 
-#' and unzip them. 
+#' The function \code{load_shkr2010} loads shkr data from
+#' the downloads shkr 2010 data set. It is required
+#' to downloads the data from https://www.jma.uni-kiel.de/en/research-projects/data-exchange-platform/shkr
+#' and unzip them.
 #'
 #' @param path Path to the downloads and unzips shkr folder
 #'
@@ -184,26 +184,26 @@ shkr_comp_loc10 <- function(loc10sel, data){
     dplyr::select(loc10_id, loc09_id, loc08_id, loc08_loc07_id, loc07_loc06_id, loc10_nam, loc10_typ_typ_a, loc10_typ_typ_b,loc10_text_beschr, loc10_text_bem, loc10_text_lit,loc08_typ,loc07_typ) %>%
     rename(loc07_id = loc08_loc07_id) %>%
     dplyr::inner_join(loc_06, by = c("loc07_loc06_id" = "loc06_id")) %>%
-    dplyr::select(loc10_id, loc09_id, loc08_id, loc07_id, loc07_loc06_id, loc06_loc05_id, x, y, loc10_nam, loc10_typ_typ_a, loc10_typ_typ_b,loc10_text_beschr, loc10_text_bem, loc10_text_lit, loc08_typ,loc07_typ,loc06_nam, loc06_typ, loc06_wp, loc06_text_beschr, loc06_text_bem, loc06_text_lit) %>%
+    dplyr::select(loc10_id, loc09_id, loc08_id, loc07_id, loc07_loc06_id, loc06_loc05_id, x, y, loc10_nam, loc10_typ_typ_a, loc10_typ_typ_b,loc10_text_beschr, loc10_text_bem, loc10_text_lit, loc08_typ,loc07_typ,loc06_nam, loc06_typ, loc06_dat_allg, loc06_wp, loc06_text_beschr, loc06_text_bem, loc06_text_lit) %>%
     rename(loc06_id = loc07_loc06_id) %>%
     rename(x_fs = x)  %>%
     rename(y_fs = y)  %>%
     dplyr::inner_join(loc_05, by = c("loc06_loc05_id" = "loc05_id")) %>%
-    dplyr::select(loc10_id, loc09_id, loc08_id, loc07_id, loc06_id, loc06_loc05_id, loc05_loc04_id, x_fs, y_fs, loc10_nam, loc10_typ_typ_a, loc10_typ_typ_b,loc10_text_beschr, loc10_text_bem, loc10_text_lit, loc08_typ,loc07_typ,loc06_nam, loc06_typ, loc06_wp, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, x, y) %>%
+    dplyr::select(loc10_id, loc09_id, loc08_id, loc07_id, loc06_id, loc06_loc05_id, loc05_loc04_id, x_fs, y_fs, loc10_nam, loc10_typ_typ_a, loc10_typ_typ_b,loc10_text_beschr, loc10_text_bem, loc10_text_lit, loc08_typ,loc07_typ,loc06_nam, loc06_typ, loc06_dat_allg, loc06_wp, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, x, y) %>%
     rename(loc05_id = loc06_loc05_id) %>%
     rename(x_ort = x)  %>%
     rename(y_ort = y)  %>%
     dplyr::inner_join(loc_04, by = c("loc05_loc04_id" = "loc04_id")) %>%
-    dplyr::select(loc10_id, loc09_id, loc08_id, loc07_id, loc06_id, loc05_id, loc05_loc04_id,loc04_loc03_id, x_fs, y_fs, x_ort, y_ort, loc10_nam, loc10_typ_typ_a, loc10_typ_typ_b,loc10_text_beschr, loc10_text_bem, loc10_text_lit, loc08_typ,loc07_typ,loc06_nam, loc06_typ, loc06_wp, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, loc04_nam) %>%
+    dplyr::select(loc10_id, loc09_id, loc08_id, loc07_id, loc06_id, loc05_id, loc05_loc04_id,loc04_loc03_id, x_fs, y_fs, x_ort, y_ort, loc10_nam, loc10_typ_typ_a, loc10_typ_typ_b,loc10_text_beschr, loc10_text_bem, loc10_text_lit, loc08_typ,loc07_typ,loc06_nam, loc06_typ, loc06_dat_allg, loc06_wp, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, loc04_nam) %>%
     rename(loc04_id = loc05_loc04_id)  %>%
     dplyr::inner_join(loc_03, by = c("loc04_loc03_id" = "loc03_id")) %>%
-    dplyr::select(loc10_id, loc09_id, loc08_id, loc07_id, loc06_id, loc05_id, loc04_id, loc04_loc03_id, loc03_loc02_id, x_fs, y_fs, x_ort, y_ort, loc10_nam, loc10_typ_typ_a, loc10_typ_typ_b,loc10_text_beschr, loc10_text_bem, loc10_text_lit, loc08_typ,loc07_typ,loc06_nam, loc06_typ, loc06_wp, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, loc04_nam) %>%
+    dplyr::select(loc10_id, loc09_id, loc08_id, loc07_id, loc06_id, loc05_id, loc04_id, loc04_loc03_id, loc03_loc02_id, x_fs, y_fs, x_ort, y_ort, loc10_nam, loc10_typ_typ_a, loc10_typ_typ_b,loc10_text_beschr, loc10_text_bem, loc10_text_lit, loc08_typ,loc07_typ,loc06_nam, loc06_typ, loc06_dat_allg, loc06_wp, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, loc04_nam) %>%
     rename(loc03_id = loc04_loc03_id)  %>%
     dplyr::inner_join(loc_02, by = c("loc03_loc02_id" = "loc02_id")) %>%
-    dplyr::select(loc10_id, loc09_id, loc08_id, loc07_id, loc06_id, loc05_id, loc04_id, loc03_id, loc03_loc02_id, loc02_loc01_id, x_fs, y_fs, x_ort, y_ort, loc10_nam, loc10_typ_typ_a, loc10_typ_typ_b,loc10_text_beschr, loc10_text_bem, loc10_text_lit, loc08_typ,loc07_typ,loc06_nam, loc06_typ, loc06_wp, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, loc04_nam, loc02_nam) %>%
+    dplyr::select(loc10_id, loc09_id, loc08_id, loc07_id, loc06_id, loc05_id, loc04_id, loc03_id, loc03_loc02_id, loc02_loc01_id, x_fs, y_fs, x_ort, y_ort, loc10_nam, loc10_typ_typ_a, loc10_typ_typ_b,loc10_text_beschr, loc10_text_bem, loc10_text_lit, loc08_typ,loc07_typ,loc06_nam, loc06_typ, loc06_dat_allg, loc06_wp, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, loc04_nam, loc02_nam) %>%
     rename(loc02_id = loc03_loc02_id)  %>%
     dplyr::inner_join(loc_01, by = c("loc02_loc01_id" = "loc01_id")) %>%
-    dplyr::select(loc10_id, loc09_id, loc08_id, loc07_id, loc06_id, loc05_id, loc04_id, loc03_id, loc02_id, loc02_loc01_id, x_fs, y_fs, x_ort, y_ort, loc10_nam, loc10_typ_typ_a, loc10_typ_typ_b,loc10_text_beschr, loc10_text_bem, loc10_text_lit, loc08_typ,loc07_typ,loc06_nam, loc06_typ, loc06_wp, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, loc04_nam, loc02_nam, loc01_nam) %>%
+    dplyr::select(loc10_id, loc09_id, loc08_id, loc07_id, loc06_id, loc05_id, loc04_id, loc03_id, loc02_id, loc02_loc01_id, x_fs, y_fs, x_ort, y_ort, loc10_nam, loc10_typ_typ_a, loc10_typ_typ_b,loc10_text_beschr, loc10_text_bem, loc10_text_lit, loc08_typ,loc07_typ,loc06_nam, loc06_typ, loc06_dat_allg, loc06_wp, loc06_text_beschr, loc06_text_bem, loc06_text_lit, loc05_nam, loc04_nam, loc02_nam, loc01_nam) %>%
     rename(loc01_id = loc02_loc01_id) ->
     loc_10_complete
 
