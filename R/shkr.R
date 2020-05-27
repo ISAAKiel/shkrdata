@@ -529,6 +529,7 @@ print_subtypes <- function(data, typestring = "B", descr = FALSE){
 #'                      9 = settlement/production/cult or religion
 #'                      10 = others
 #'                      12 = unknown
+#'                      13 = production
 #'
 #' @param data list of shkr tibbles as produced by \code{load_shkr2010}
 #' @param type numeric vector of types of sites (see thesaurus above)
