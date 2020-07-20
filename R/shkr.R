@@ -551,7 +551,7 @@ shkr_filter_loc06 <- function(data, type){
     require(magrittr)
     data[[6]] %>%
         dplyr::select(loc06_id, loc06_loc05_id, loc06_nam, loc06_typ, loc06_dat_allg, loc06_huegelz, loc06_text_beschr, loc06_text_bem, loc06_text_lit, x, y) %>%
-        dplyr::filter(loc06_typ == type) ->
+        dplyr::filter(loc06_typ %in% type) ->
         sites
     return(sites)
 }
